@@ -2,6 +2,7 @@
 
 
 #include "Animation/TAnimInstance.h"
+#include "Kismet/KismetMathLibrary.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UTAnimInstance
@@ -23,6 +24,22 @@ void UTAnimInstance::NativeInitializeAnimation()
 
 void UTAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
+	if (OwnerCharacter)
+	{
+		Speed = OwnerCharacter->GetVelocity().Length();
+		FRotator BodyRot = OwnerCharacter->GetActorRotation();
+		FRotator DeltaRot = UKismetMathLibrary::NormalizedDeltaRotator(BodyRot, PrevBodyRot);
+		PrevBodyRot = BodyRot;
+		YawSpeed = DeltaRot.Yaw / DeltaSeconds;
+		//YawSpeed = FMath::Abs(BodyPrevRot.Yaw - BodyRot.Yaw) / DeltaSeconds;
+
+		SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawSpeedSmoothLerpSpeed);
+	}
+
+	if(OwnerCharacterMovementComponent)
+	{
+		bIsJumping = OwnerCharacterMovementComponent->IsFalling();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

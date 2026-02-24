@@ -88,15 +88,24 @@ void ATPlayerCharacter::HandleMovementInput(const FInputActionValue& Value)
 	AddMovementInput(GetMoveFwdDir() * InputValue.Y + GetLookRightDir() * InputValue.X);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Get Look Fwd Dir
+
 FVector ATPlayerCharacter::GetLookFwdDir()
 {
 	return ViewCamera->GetForwardVector();
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Get Look Right Dir
+
 FVector ATPlayerCharacter::GetLookRightDir()
 {
 	return ViewCamera->GetRightVector();
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Get Move Fwd Dir
 
 FVector ATPlayerCharacter::GetMoveFwdDir()
 {
