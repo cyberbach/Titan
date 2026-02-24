@@ -8,7 +8,7 @@ echo ========================================================
 echo.
 
 REM ======== НАСТРОЙКИ ========
-set "PROJECT_ROOT=D:\Projects\OnTitanGame\Plugins\ShooterCore"
+set "PROJECT_ROOT=D:\Projects\Titan\Source"
 set "OUTPUT_FILE=%~dp0all_code.txt"
 REM ============================
 
