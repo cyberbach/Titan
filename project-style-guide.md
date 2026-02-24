@@ -72,6 +72,32 @@ class UWeaponComponent : public UActorComponent
 
 ---
 
+**COMMENTS-003** (error)  
+**Scope:** объявление класса с `UCLASS/USTRUCT/UENUM` в `.h`  
+**Правило:** Комментарий-шапка над классом должен содержать название класса **без префикса** (A, U, F и т.д.) и с пробелами между словами (разбивая CamelCase).  
+
+✅ **Правильно:**
+```cpp
+//////////////////////////////////////////////////////////////////////////
+// T Player Character
+
+UCLASS()
+class ATPlayerCharacter : public ACharacter
+```
+
+❌ **Неправильно:**
+```cpp
+UCLASS()
+class ATPlayerCharacter : public ACharacter
+//////////////////////////////////////////////////////////////////////////
+// ATPlayerCharacter
+
+UCLASS()
+class ATPlayerCharacter : public ACharacter
+```
+
+---
+
 ## 3. 🧱 Структуры (`USTRUCT`)
 
 **STRUCT-001** (error)  
@@ -116,7 +142,8 @@ class UWeaponComponent : public UActorComponent
 ---
 
 **ENUM-002** (error)  
-**Правило:**  
+**Scope:** любое `UENUM`  
+**Правило:**
 - Каждый элемент с префиксом из заглавных букв имени (для `EItemType` → `EIT_`).  
 - **Обязательно** наличие элемента `ИМЯ_MAX` в конце.  
 
@@ -281,7 +308,7 @@ TMap<TObjectPtr<AActor>, FQuestData>   // умный указатель (не р
 
 | Severity | Правила |
 |----------|--------|
-| `error`  | FILES-001, COMMENTS-001/002, STRUCT-001, ENUM-001/002, FORWARD-001, INIT-001/002, REPL-001, TEXT-001 |
+| `error`  | FILES-001, COMMENTS-001/002/003, STRUCT-001, ENUM-001/002, FORWARD-001, INIT-001/002, REPL-001, TEXT-001 |
 | `warning`| STRUCT-002, FNAME-001, MAP-001 |
 
 ---

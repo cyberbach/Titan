@@ -4,11 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Character/TCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "Camera/CameraComponent.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
 #include "TPlayerCharacter.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// T Player Character
+
 UCLASS()
 class ATPlayerCharacter : public ATCharacter
 {
@@ -21,14 +26,27 @@ public:
 
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "View")
-	class USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "View")
-	class UCameraComponent* ViewCamera;
+	UCameraComponent* ViewCamera;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputMappingContext* GameplayInputMappingContext;
+	UInputMappingContext* GameplayInputMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputAction* IA_Jump;
+	UInputAction* IA_Look;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* IA_Move;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* IA_Jump;
+
+	void HandleLookInput(const FInputActionValue& Value);
+	void HandleMovementInput(const FInputActionValue& Value);
+
+	FVector GetLookFwdDir();
+	FVector GetLookRightDir();
+	FVector GetMoveFwdDir();
 };

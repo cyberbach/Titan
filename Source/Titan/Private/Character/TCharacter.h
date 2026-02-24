@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/PlayerController.h"
 #include "TCharacter.generated.h"
+
+//////////////////////////////////////////////////////////////////////////
+// T Character
 
 UCLASS()
 class ATCharacter : public ACharacter
@@ -24,6 +28,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 };

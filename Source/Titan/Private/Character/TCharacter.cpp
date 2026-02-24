@@ -4,7 +4,9 @@
 #include "Character/TCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
 
-// Sets default values
+//////////////////////////////////////////////////////////////////////////
+// T Character
+
 ATCharacter::ATCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -13,21 +15,27 @@ ATCharacter::ATCharacter()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-// Called when the game starts or when spawned
+//////////////////////////////////////////////////////////////////////////
+// Begin Play
+
 void ATCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
+//////////////////////////////////////////////////////////////////////////
+// Tick
+
 void ATCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-// Called to bind functionality to input
+//////////////////////////////////////////////////////////////////////////
+// Setup Player Input Component
+
 void ATCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);

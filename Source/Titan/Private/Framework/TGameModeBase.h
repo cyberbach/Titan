@@ -6,9 +6,9 @@
 #include "GameFramework/GameModeBase.h"
 #include "TGameModeBase.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// T Game Mode Base
+
 UCLASS()
 class ATGameModeBase : public AGameModeBase
 {
