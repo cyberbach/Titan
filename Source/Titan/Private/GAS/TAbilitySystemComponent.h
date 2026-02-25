@@ -6,9 +6,9 @@
 #include "AbilitySystemComponent.h"
 #include "TAbilitySystemComponent.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// T Ability System Component
+
 UCLASS()
 class UTAbilitySystemComponent : public UAbilitySystemComponent
 {

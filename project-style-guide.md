@@ -36,45 +36,8 @@
 ## 2. 💬 Комментарии
 
 **COMMENTS-001** (error)  
-**Scope:** определение функции в `.cpp`  
-**Правило:** Каждая функция начинается с комментария-шаблона `////////// // Имя Функции`.  
-
-✅ **Правильно:**
-```cpp
-////////////////////////////////////////////////////////////////////////
-// Begin Play
-
-void ABaseCharacter::BeginPlay() { ... }
-```
-
-❌ **Неправильно:** без комментария.
-
----
-
-**COMMENTS-002** (error)  
-**Scope:** объявление класса в `.h` с `UCLASS/USTRUCT/UENUM`  
-**Правило:** Класс предваряется аналогичным комментарием с его названием.  
-
-✅ **Правильно:**
-```cpp
-////////////////////////////////////////////////////////////////////////
-// Weapon Component
-
-UCLASS(...)
-class UWeaponComponent : public UActorComponent
-{
-    GENERATED_BODY()
-    ...
-};
-```
-
-❌ **Неправильно:** без комментария.
-
----
-
-**COMMENTS-003** (error)  
-**Scope:** объявление класса с `UCLASS/USTRUCT/UENUM` в `.h`  
-**Правило:** Комментарий-шапка над классом должен содержать название класса **без префикса** (A, U, F и т.д.) и с пробелами между словами (разбивая CamelCase).  
+**Scope:** `.h` файлы с `UCLASS/USTRUCT/UENUM`  
+**Правило:** Над классом добавить комментарий с названием класса **без префикса** (A, U, F и т.д.) и с пробелами между словами. Для объявлений функций комментарии **НЕ нужны**.
 
 ✅ **Правильно:**
 ```cpp
@@ -83,17 +46,178 @@ class UWeaponComponent : public UActorComponent
 
 UCLASS()
 class ATPlayerCharacter : public ACharacter
+{
+    GENERATED_BODY()
+
+public:
+    ATPlayerCharacter();
+    virtual void BeginPlay() override;
+};
+```
+
+❌ **Неправильно:** комментарии над каждым методом в .h файле.
+
+---
+
+**COMMENTS-002** (error)  
+**Scope:** `.cpp` файлы с реализациями функций  
+**Правило:** Каждая функция начинается с комментария `////////// // Имя Функции`.
+
+✅ **Правильно:**
+```cpp
+//////////////////////////////////////////////////////////////////////////
+// Begin Play
+
+void ATPlayerCharacter::BeginPlay()
+{
+    ...
+}
+```
+
+❌ **Неправильно:** без комментария.
+
+---
+
+**COMMENTS-003** (error)  
+**Scope:** `.h` файлы с макросами перед `UCLASS/USTRUCT`  
+**Правило:** **Не трогать и не удалять** макросы над `UCLASS`/`USTRUCT`.
+
+✅ **Правильно:**
+```cpp
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+        GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+        ...
+
+//////////////////////////////////////////////////////////////////////////
+// UTAttributeSet
+
+UCLASS()
+class UTAttributeSet : public UAttributeSet
+```
+
+---
+
+**COMMENTS-004** (error)  
+**Scope:** `.cpp` файлы  
+**Правило:** Комментарий с названием класса добавлять **только если в файле есть реализации функций**. Если файл содержит только `#include` — не добавлять.
+
+✅ **Правильно:**
+```cpp
+// TAttributeSet.cpp — пустой
+#include "GAS/TAttributeSet.h"
+```
+
+```cpp
+// TAbilitySystemComponent.cpp — есть функции
+#include "GAS/TAbilitySystemComponent.h"
+
+//////////////////////////////////////////////////////////////////////////
+// Some Function
+
+void UTAbilitySystemComponent::SomeFunction() { ... }
+```
+
+❌ **Неправильно:** без комментария.
+
+---
+
+**COMMENTS-004** (error)
+**Scope:** `.h` файлы с макросами перед `UCLASS/USTRUCT`  
+**Правило:** **Не трогать и не удалять** макросы, расположенные над `UCLASS`/`USTRUCT`. Оставлять как есть.
+
+✅ **Правильно:**
+```cpp
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+//////////////////////////////////////////////////////////////////////////
+// UTAttributeSet
+
+UCLASS()
+class UTAttributeSet : public UAttributeSet
+```
+
+---
+
+**COMMENTS-005** (error)  
+**Scope:** `.cpp` файлы  
+**Правило:** Комментарий с названием класса добавлять **только если в файле есть реализации функций**. Если файл содержит только `#include` — не добавлять.
+
+✅ **Правильно:**
+```cpp
+// TAttributeSet.cpp — пустой или только с include
+#include "GAS/TAttributeSet.h"
+```
+
+```cpp
+// TAbilitySystemComponent.cpp — есть функции
+//////////////////////////////////////////////////////////////////////////
+// UTAbilitySystemComponent
+
+#include "GAS/TAbilitySystemComponent.h"
+
+void UTAbilitySystemComponent::SomeFunction() { ... }
+```
+
+---
+
+## 2a. 📐 Форматирование
+
+**LAYOUT-001** (error)  
+**Scope:** `.h` файлы с классами  
+**Правило:** Перед модификаторами доступа `private:`/`protected:`/`public:` должна быть **ровно 1 пустая строка**.
+
+✅ **Правильно:**
+```cpp
+UCLASS()
+class ATPlayerCharacter : public ATCharacter
+{
+    GENERATED_BODY()
+
+public:
+    ATPlayerCharacter();
+
+protected:
+    virtual void BeginPlay() override;
+
+private:
+    UPROPERTY()
+    int32 Value;
+};
 ```
 
 ❌ **Неправильно:**
 ```cpp
 UCLASS()
-class ATPlayerCharacter : public ACharacter
-//////////////////////////////////////////////////////////////////////////
-// ATPlayerCharacter
+class ATPlayerCharacter : public ATCharacter
+{
+    GENERATED_BODY()
+public:   // нет пустой строки
+    ATPlayerCharacter();
+};
+```
 
-UCLASS()
-class ATPlayerCharacter : public ACharacter
+---
+
+**LAYOUT-002** (error)  
+**Scope:** `.h` файлы с `generated.h`  
+**Правило:** `#include "...generated.h"` должен быть **последним** в списке инклюдов.
+
+✅ **Правильно:**
+```cpp
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "TCharacter.generated.h"
+```
+
+❌ **Неправильно:**
+```cpp
+#include "TCharacter.generated.h"  // не на месте
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
 ```
 
 ---
@@ -308,7 +432,7 @@ TMap<TObjectPtr<AActor>, FQuestData>   // умный указатель (не р
 
 | Severity | Правила |
 |----------|--------|
-| `error`  | FILES-001, COMMENTS-001/002/003, STRUCT-001, ENUM-001/002, FORWARD-001, INIT-001/002, REPL-001, TEXT-001 |
+| `error`  | FILES-001, COMMENTS-001/002/003/004, LAYOUT-001/002, STRUCT-001, ENUM-001/002, FORWARD-001, INIT-001/002, REPL-001, TEXT-001 |
 | `warning`| STRUCT-002, FNAME-001, MAP-001 |
 
 ---

@@ -9,7 +9,7 @@
 #include "TAnimInstance.generated.h"
 
 //////////////////////////////////////////////////////////////////////////
-// UTAnimInstance
+// T Anim Instance
 
 UCLASS()
 class UTAnimInstance : public UAnimInstance

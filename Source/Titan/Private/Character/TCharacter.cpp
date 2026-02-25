@@ -4,9 +4,6 @@
 #include "Character/TCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
 
-//////////////////////////////////////////////////////////////////////////
-// T Character
-
 ATCharacter::ATCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.

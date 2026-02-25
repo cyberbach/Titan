@@ -9,7 +9,6 @@
 #include "Camera/CameraComponent.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
-
 #include "TPlayerCharacter.generated.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +45,6 @@ private:
 
 	void HandleLookInput(const FInputActionValue& Value);
 	void HandleMovementInput(const FInputActionValue& Value);
-
 	FVector GetLookFwdDir();
 	FVector GetLookRightDir();
 	FVector GetMoveFwdDir();

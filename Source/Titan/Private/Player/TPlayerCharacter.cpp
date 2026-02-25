@@ -9,9 +9,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-//////////////////////////////////////////////////////////////////////////
-// ATPlayerCharacter
-
 ATPlayerCharacter::ATPlayerCharacter()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
