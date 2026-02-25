@@ -13,6 +13,9 @@ ATCharacter::ATCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	TAbilitySystemComponent = CreateDefaultSubobject<UTAbilitySystemComponent>(TEXT("T Ability System Component"));
+	TAttributeSet = CreateDefaultSubobject<UTAttributeSet>(TEXT("T Attribute Set"));
 }
 
 //////////////////////////////////////////////////////////////////////////

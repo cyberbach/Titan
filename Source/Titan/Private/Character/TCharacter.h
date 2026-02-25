@@ -5,13 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PlayerController.h"
+#include "AbilitySystemInterface.h"
+#include "GAS/TAbilitySystemComponent.h"
+#include "GAS/TAttributeSet.h"
 #include "TCharacter.generated.h"
 
 //////////////////////////////////////////////////////////////////////////
 // T Character
 
 UCLASS()
-class ATCharacter : public ACharacter
+class ATCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -30,4 +33,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	// GAS
+	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override { return TAbilitySystemComponent; }
+private:
+	UTAbilitySystemComponent* TAbilitySystemComponent;
+	UTAttributeSet* TAttributeSet;
 };
