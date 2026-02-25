@@ -222,6 +222,32 @@ public:   // нет пустой строки
 
 ---
 
+**LAYOUT-003** (error)  
+**Scope:** все `.cpp` и `.h` файлы  
+**Правило:** Между верхним комментарием (`// Created by ...`) и первым `#include` должна быть **ровно 1 пустая строка**.
+
+✅ **Правильно:**
+```cpp
+// Created by Andrey cb Mikheev
+
+#include "CoreMinimal.h"
+```
+
+❌ **Неправильно:**
+```cpp
+// Created by Andrey cb Mikheev
+
+
+#include "CoreMinimal.h"  // две пустые строки
+```
+
+```cpp
+// Created by Andrey cb Mikheev
+#include "CoreMinimal.h"  // нет пустой строки
+```
+
+---
+
 ## 3. 🧱 Структуры (`USTRUCT`)
 
 **STRUCT-001** (error)  
@@ -432,7 +458,7 @@ TMap<TObjectPtr<AActor>, FQuestData>   // умный указатель (не р
 
 | Severity | Правила |
 |----------|--------|
-| `error`  | FILES-001, COMMENTS-001/002/003/004, LAYOUT-001/002, STRUCT-001, ENUM-001/002, FORWARD-001, INIT-001/002, REPL-001, TEXT-001 |
+| `error`  | FILES-001, COMMENTS-001/002/003/004, LAYOUT-001/002/003, STRUCT-001, ENUM-001/002, FORWARD-001, INIT-001/002, REPL-001, TEXT-001 |
 | `warning`| STRUCT-002, FNAME-001, MAP-001 |
 
 ---

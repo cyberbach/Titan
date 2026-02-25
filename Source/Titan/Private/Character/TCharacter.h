@@ -20,11 +20,13 @@ class ATCharacter : public ACharacter, public IAbilitySystemInterface
 
 public:
 	ATCharacter();
+	void ServerSideInit();
+	void ClientSideInit();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
@@ -32,6 +34,9 @@ public:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override { return TAbilitySystemComponent; }
 
 private:
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	UTAbilitySystemComponent* TAbilitySystemComponent;
+
+	UPROPERTY()
 	UTAttributeSet* TAttributeSet;
 };

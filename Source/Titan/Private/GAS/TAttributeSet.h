@@ -22,18 +22,26 @@ class UTAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, Health)
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, MaxHealth)
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, Mana)
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, MaxMana)
 
 private:
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing = OnRep_Health)
 	FGameplayAttributeData Health;
+
 	UPROPERTY()
 	FGameplayAttributeData MaxHealth;
+
 	UPROPERTY()
 	FGameplayAttributeData Mana;
+
 	UPROPERTY()
 	FGameplayAttributeData MaxMana;
+
+	UFUNCTION()
+	void OnRep_Health(const FGameplayAttributeData& OldValue);
 };

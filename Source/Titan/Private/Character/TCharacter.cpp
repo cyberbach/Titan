@@ -1,6 +1,5 @@
 // Created by Andrey cb Mikheev
 
-
 #include "Character/TCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
 
@@ -13,6 +12,17 @@ ATCharacter::ATCharacter()
 
 	TAbilitySystemComponent = CreateDefaultSubobject<UTAbilitySystemComponent>(TEXT("T Ability System Component"));
 	TAttributeSet = CreateDefaultSubobject<UTAttributeSet>(TEXT("T Attribute Set"));
+}
+
+void ATCharacter::ServerSideInit()
+{
+	TAbilitySystemComponent->InitAbilityActorInfo(this, this);
+	TAbilitySystemComponent->ApplyInitialEffects();
+}
+
+void ATCharacter::ClientSideInit()
+{
+	TAbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
 //////////////////////////////////////////////////////////////////////////
