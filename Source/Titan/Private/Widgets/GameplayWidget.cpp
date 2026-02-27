@@ -1,11 +1,13 @@
 // Created by Andrey cb Mikheev
 
-
 #include "Widgets/GameplayWidget.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/TAttributeSet.h"
-#include "Widgets/ValueGuage.h"
+#include "Widgets/ValueGauge.h"
+
+//////////////////////////////////////////////////////////////////////////
+// Native Construct
 
 void UGameplayWidget::NativeConstruct()
 {

@@ -9,13 +9,13 @@
 #include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
 #include "GameplayEffectTypes.h"
-#include "ValueGuage.generated.h"
+#include "ValueGauge.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// U Value Gauge
+
 UCLASS()
-class UValueGuage : public UUserWidget
+class UValueGauge : public UUserWidget
 {
 	GENERATED_BODY()
 	
@@ -35,8 +35,8 @@ private:
 	FLinearColor BarColor;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
-	UProgressBar* TProgressBar;
+	UProgressBar* ProgressBar;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
-	UTextBlock* TValueText;
+	UTextBlock* ValueText;
 };

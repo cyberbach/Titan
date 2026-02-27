@@ -6,21 +6,23 @@
 #include "Blueprint/UserWidget.h"
 #include "GameplayWidget.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// U Gameplay Widget
+
 UCLASS()
 class UGameplayWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
 	virtual void NativeConstruct() override;
+
 public:
 	UPROPERTY(meta = (BindWidget))
-	class UValueGuage* HealthBar;
+	class UValueGauge* HealthBar;
 
 	UPROPERTY(meta = (BindWidget))
-	class UValueGuage* ManaBar;
+	class UValueGauge* ManaBar;
 
 	UPROPERTY()	
 	class UAbilitySystemComponent* OwnerAbilitySystemComponent;

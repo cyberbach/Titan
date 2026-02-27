@@ -1,20 +1,25 @@
 // Created by Andrey cb Mikheev
 
-#include "Widgets/ValueGuage.h"
+#include "Widgets/ValueGauge.h"
 #include "AbilitySystemComponent.h"
 
+//////////////////////////////////////////////////////////////////////////
+// Native Pre Construct
 
-void UValueGuage::NativePreConstruct()
+void UValueGauge::NativePreConstruct()
 {
 	Super::NativeConstruct();
 
-	if (TProgressBar)
+	if (ProgressBar)
 	{
-		TProgressBar->SetFillColorAndOpacity(BarColor);
+		ProgressBar->SetFillColorAndOpacity(BarColor);
 	}
 }
 
-void UValueGuage::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComp, const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute)
+//////////////////////////////////////////////////////////////////////////
+// Set And Bound To Gameplay Attribute
+
+void UValueGauge::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComp, const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute)
 {
 	if (!AbilitySystemComp) {
 		return;		
@@ -31,11 +36,14 @@ void UValueGuage::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* Abilit
 		}
 	}
 
-	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(this, &UValueGuage::ValueChanged);
-	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(MaxAttribute).AddUObject(this, &UValueGuage::MaxValueChanged);
+	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(this, &UValueGauge::ValueChanged);
+	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(MaxAttribute).AddUObject(this, &UValueGauge::MaxValueChanged);
 }
 
-void UValueGuage::SetValue(float NewValue, float NewMaxValue)
+//////////////////////////////////////////////////////////////////////////
+// Set Value
+
+void UValueGauge::SetValue(float NewValue, float NewMaxValue)
 {
 	CachedValue = NewValue;
 	CachedMaxValue = NewMaxValue;
@@ -45,9 +53,9 @@ void UValueGuage::SetValue(float NewValue, float NewMaxValue)
 		return;
 	}
 
-	if (TProgressBar)
+	if (ProgressBar)
 	{
-		TProgressBar->SetPercent(NewValue / NewMaxValue);
+		ProgressBar->SetPercent(NewValue / NewMaxValue);
 	}
 
 	FNumberFormattingOptions NumberFormatOptions = FNumberFormattingOptions().SetMaximumFractionalDigits(0);
@@ -60,7 +68,7 @@ void UValueGuage::SetValue(float NewValue, float NewMaxValue)
 		)
 	);*/
 
-	TValueText->SetText(
+	ValueText->SetText(
 		FText::Format(
 			FTextFormat::FromString("{0} / {1}"),
 			FText::AsNumber(NewValue, &NumberFormatOptions),
@@ -69,12 +77,18 @@ void UValueGuage::SetValue(float NewValue, float NewMaxValue)
 	);
 }
 
-void UValueGuage::ValueChanged(const FOnAttributeChangeData& Data)
+//////////////////////////////////////////////////////////////////////////
+// Value Changed
+
+void UValueGauge::ValueChanged(const FOnAttributeChangeData& Data)
 {
 	SetValue(Data.NewValue, CachedMaxValue);
 }
 
-void UValueGuage::MaxValueChanged(const FOnAttributeChangeData& Data)
+//////////////////////////////////////////////////////////////////////////
+// Max Value Changed
+
+void UValueGauge::MaxValueChanged(const FOnAttributeChangeData& Data)
 {
 	SetValue(CachedValue, Data.NewValue);
 }
