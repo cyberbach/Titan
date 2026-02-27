@@ -20,7 +20,10 @@ public class Titan : ModuleRules
 			"EnhancedInput",
 			"GameplayAbilities",
 			"GameplayTags",
-			"GameplayTasks"
+			"GameplayTasks",
+			"UMG",
+			"Slate",
+            "SlateCore"
         });
 
 		// Uncomment if you are using Slate UI
