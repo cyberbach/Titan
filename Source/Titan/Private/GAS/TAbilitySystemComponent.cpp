@@ -2,6 +2,9 @@
 
 #include "GAS/TAbilitySystemComponent.h"
 
+//////////////////////////////////////////////////////////////////////////
+// Apply Initial Effects
+
 void UTAbilitySystemComponent::ApplyInitialEffects()
 {
 	if(!GetOwner() || !GetOwner()->HasAuthority())

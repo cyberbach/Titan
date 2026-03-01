@@ -3,6 +3,9 @@
 #include "Player/TPlayerController.h"
 #include "Widgets/GameplayWidget.h"
 
+//////////////////////////////////////////////////////////////////////////
+// On Possess
+
 void ATPlayerController::OnPossess(APawn* newPawn)
 {
 	Super::OnPossess(newPawn);
@@ -12,6 +15,9 @@ void ATPlayerController::OnPossess(APawn* newPawn)
 		TPlayerCharacter->ServerSideInit();
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Acknowledge Possession
 
 void ATPlayerController::AcknowledgePossession(APawn* newPawn)
 {
@@ -23,6 +29,9 @@ void ATPlayerController::AcknowledgePossession(APawn* newPawn)
 		SpawnGameplayWidget();
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Spawn Gameplay Widget
 
 void ATPlayerController::SpawnGameplayWidget()
 {

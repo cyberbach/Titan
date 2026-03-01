@@ -22,6 +22,8 @@ public:
 	ATCharacter();
 	void ServerSideInit();
 	void ClientSideInit();
+	bool IsLocallyControlledByPlayer() const;
+	virtual void PossessedBy(AController* NewController) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -39,4 +41,19 @@ private:
 
 	UPROPERTY()
 	UTAttributeSet* TAttributeSet;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "UI")
+	class UWidgetComponent* OverHeadWidgetComponent;
+
+	void ConfigureOverHeadStatusWidget();
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	float OverHeadWidgetVisibilityUpdateInterval = 0.3f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	float OverHeadWidgetVisibilityDistance = 10000000.0f;
+
+	FTimerHandle OverHeadWidgetVisibilityUpdateTimerHandle;
+
+	void UpdateOverHeadWidgetVisibility();
 };

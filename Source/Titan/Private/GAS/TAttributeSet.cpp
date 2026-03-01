@@ -3,6 +3,9 @@
 #include "GAS/TAttributeSet.h"
 #include "Net/UnrealNetwork.h"
 
+//////////////////////////////////////////////////////////////////////////
+// Get Lifetime Replicated Props
+
 void UTAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -13,21 +16,32 @@ void UTAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME_CONDITION_NOTIFY(UTAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// On Rep Health
+
 void UTAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UTAttributeSet, Health, OldValue);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// On Rep Max Health
 
 void UTAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UTAttributeSet, MaxHealth, OldValue);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// On Rep Mana
+
 void UTAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UTAttributeSet, Mana, OldValue);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// On Rep Max Mana
 
 void UTAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue)
 {
