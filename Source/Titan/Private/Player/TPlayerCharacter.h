@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "GAS/TGameplayAbilityTypes.h"
 #include "TPlayerCharacter.generated.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,8 +44,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* IA_Jump;
 
-	void HandleLookInput(const FInputActionValue& Value);
-	void HandleMovementInput(const FInputActionValue& Value);
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TMap<ETAbilityInputID, UInputAction*> GameplayAbilityInputActions;
+
+	void HandleLookInput(const FInputActionValue& InputActionValue);
+	void HandleMovementInput(const FInputActionValue& InputActionValue);
+	void HandleAbilityInput(const FInputActionValue& InputActionValue, ETAbilityInputID InputID);
+
 	FVector GetLookFwdDir();
 	FVector GetLookRightDir();
 	FVector GetMoveFwdDir();

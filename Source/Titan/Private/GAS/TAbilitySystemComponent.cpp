@@ -7,7 +7,7 @@
 
 void UTAbilitySystemComponent::ApplyInitialEffects()
 {
-	if(!GetOwner() || !GetOwner()->HasAuthority())
+	if (!GetOwner() || !GetOwner()->HasAuthority())
 	{
 		return;
 	}
@@ -25,5 +25,23 @@ void UTAbilitySystemComponent::ApplyInitialEffects()
 				ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 			}
 		}
+	}
+}
+
+void UTAbilitySystemComponent::GiveInitialAbilities()
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	for (const TPair<ETAbilityInputID, TSubclassOf<UGameplayAbility>>& AbilityPair : Abilities)
+	{
+		GiveAbility(FGameplayAbilitySpec(AbilityPair.Value, 0, (int32)AbilityPair.Key, nullptr));
+	}
+
+	for (const TPair<ETAbilityInputID, TSubclassOf<UGameplayAbility>>& AbilityPair : BasicAbilities)
+	{
+		GiveAbility(FGameplayAbilitySpec(AbilityPair.Value, 1, (int32)AbilityPair.Key, nullptr));
 	}
 }

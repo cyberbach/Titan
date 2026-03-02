@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "AbilitySystemComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ATPlayerCharacter
@@ -63,15 +64,23 @@ void ATPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_Jump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(IA_Look, ETriggerEvent::Triggered, this, &ThisClass::HandleLookInput);
 		EnhancedInputComponent->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ThisClass::HandleMovementInput);
+
+		for(const auto& Pair : GameplayAbilityInputActions)
+		{
+			if(Pair.Value)
+			{
+				EnhancedInputComponent->BindAction(Pair.Value, ETriggerEvent::Triggered, this, &ATPlayerCharacter::HandleAbilityInput, Pair.Key);
+			}
+		}
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Handle Look Input
 
-void ATPlayerCharacter::HandleLookInput(const FInputActionValue& Value)
+void ATPlayerCharacter::HandleLookInput(const FInputActionValue& InputActionValue)
 {
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
 
 	AddControllerPitchInput(LookAxisVector.Y);
 	AddControllerYawInput(LookAxisVector.X);
@@ -80,12 +89,25 @@ void ATPlayerCharacter::HandleLookInput(const FInputActionValue& Value)
 //////////////////////////////////////////////////////////////////////////
 // Handle Movement Input
 
-void ATPlayerCharacter::HandleMovementInput(const FInputActionValue& Value)
+void ATPlayerCharacter::HandleMovementInput(const FInputActionValue& InputActionValue)
 {
-	FVector2D InputValue = Value.Get<FVector2D>();
+	FVector2D InputValue = InputActionValue.Get<FVector2D>();
 	InputValue.Normalize();
 
 	AddMovementInput(GetMoveFwdDir() * InputValue.Y + GetLookRightDir() * InputValue.X);
+}
+
+void ATPlayerCharacter::HandleAbilityInput(const FInputActionValue& InputActionValue, ETAbilityInputID InputID)
+{
+	bool bPressed = InputActionValue.Get<bool>();
+	if(bPressed)
+	{
+		GetAbilitySystemComponent()->AbilityLocalInputPressed((int32)InputID);
+	}
+	else
+	{
+		GetAbilitySystemComponent()->AbilityLocalInputReleased((int32)InputID);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

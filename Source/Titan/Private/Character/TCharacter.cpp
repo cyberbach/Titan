@@ -30,6 +30,7 @@ void ATCharacter::ServerSideInit()
 {
 	TAbilitySystemComponent->InitAbilityActorInfo(this, this);
 	TAbilitySystemComponent->ApplyInitialEffects();
+	TAbilitySystemComponent->GiveInitialAbilities();
 }
 
 //////////////////////////////////////////////////////////////////////////
