@@ -6,14 +6,17 @@
 #include "Abilities/GameplayAbility.h"
 #include "TGameplayAbility.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// UT Gameplay Ability
+
 UCLASS()
 class UTGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
-	
+
 public:
-	void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
+protected:
+	class UAnimInstance* GetOwnerAnimInstance() const;
+	TArray<FHitResult> GetHitResultFromSweepLocationTargetData(const FGameplayAbilityTargetDataHandle& TargetDataHandle, float SphereSweepRadius = 30.0f, bool bDrawDebug = false, bool bIgnoreSelf = true) const;
 };

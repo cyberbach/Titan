@@ -111,8 +111,8 @@ void ATCharacter::ConfigureOverHeadStatusWidget()
 		OverHeadWidgetComponent->SetVisibility(true);
 		OverHeadWidgetComponent->SetHiddenInGame(false);
 
-		GetWorldTimerManager().ClearTimer(OverHeadWidgetVisibilityUpdateTimerHandle);
-		GetWorldTimerManager().SetTimer(OverHeadWidgetVisibilityUpdateTimerHandle, this, &ATCharacter::UpdateOverHeadWidgetVisibility, OverHeadWidgetVisibilityUpdateInterval, true);
+		GetWorldTimerManager().ClearTimer(OverHeadGaugeVisibilityUpdateTimerHandle);
+		GetWorldTimerManager().SetTimer(OverHeadGaugeVisibilityUpdateTimerHandle, this, &ATCharacter::UpdateOverHeadWidgetVisibility, OverHeadWidgetVisibilityUpdateInterval, true);
 	}	
 }
 

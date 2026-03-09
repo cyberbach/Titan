@@ -23,6 +23,7 @@ class UTAttributeSet : public UAttributeSet
 
 public:
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, Health)
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, MaxHealth)

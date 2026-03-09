@@ -7,9 +7,9 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "TAbilitySystemStatics.generated.h"
 
-/**
- * 
- */
+//////////////////////////////////////////////////////////////////////////
+// UT Ability System Statics
+
 UCLASS()
 class UTAbilitySystemStatics : public UBlueprintFunctionLibrary
 {

@@ -53,7 +53,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	float OverHeadWidgetVisibilityDistance = 10000000.0f;
 
-	FTimerHandle OverHeadWidgetVisibilityUpdateTimerHandle;
-
+	FTimerHandle OverHeadGaugeVisibilityUpdateTimerHandle;
 	void UpdateOverHeadWidgetVisibility();
 };

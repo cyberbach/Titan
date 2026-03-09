@@ -2,7 +2,10 @@
 
 #include "GAS/TAbilitySystemStatics.h"
 
+//////////////////////////////////////////////////////////////////////////
+// Get Basic Attack Ability Tag
+
 FGameplayTag UTAbilitySystemStatics::GetBasicAttackAbilityTag()
 {
-	return FGameplayTag::RequestGameplayTag("Ability.BasicAttack");
+	return FGameplayTag::RequestGameplayTag("ability.basicattack");
 }
