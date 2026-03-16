@@ -165,17 +165,23 @@ void UGA_Combo::ComboChangedEventReceived(FGameplayEventData Payload)
 
 void UGA_Combo::DoDamage(FGameplayEventData Payload)
 {
-	TArray<FHitResult> HitResults = GetHitResultFromSweepLocationTargetData(Payload.TargetData, 30.0f, false, true);
+	TArray<FHitResult> HitResults = GetHitResultFromSweepLocationTargetData(Payload.TargetData, TargetSweepSphereRadius, false, true);
 
 	for(const FHitResult& HitResult : HitResults)
 	{
 		FGameplayAbilitySpecHandle SpecHandle = GetCurrentAbilitySpecHandle();
-		int32 AbilityLevel = GetAbilityLevel(SpecHandle, GetCurrentActorInfo());
+		const FGameplayAbilityActorInfo *ActorInfo = GetCurrentActorInfo();
+		int32 AbilityLevel = GetAbilityLevel(SpecHandle, ActorInfo);
 		TSubclassOf<UGameplayEffect> DamageEffectClass = GetDamageEffectForCurrentCombo();
+
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, AbilityLevel);
 		FGameplayAbilityTargetDataHandle TargetData = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitResult.GetActor());
 
-		ApplyGameplayEffectSpecToTarget(SpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetData);
+		FGameplayEffectContextHandle EffectContext = MakeEffectContext(SpecHandle, ActorInfo);
+		EffectContext.AddHitResult(HitResult, true);
+		EffectSpecHandle.Data->SetContext(EffectContext);
+
+		ApplyGameplayEffectSpecToTarget(SpecHandle, ActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetData);
 		
 		//UE_LOG(LogTemp, Warning, TEXT("Hit actor %s"), *HitResult.GetActor()->GetName());
 	}
