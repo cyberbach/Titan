@@ -8,6 +8,7 @@
 #include "AbilitySystemInterface.h"
 #include "GAS/TAbilitySystemComponent.h"
 #include "GAS/TAttributeSet.h"
+#include "GameplayTagContainer.h"
 #include "TCharacter.generated.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,6 +37,9 @@ public:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override { return TAbilitySystemComponent; }
 
 private:
+	void BindGASChangeDelegates();
+	void DeathTagUpdated(const FGameplayTag Tag, int32 NewCount);
+
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	UTAbilitySystemComponent* TAbilitySystemComponent;
 
@@ -55,4 +59,7 @@ private:
 
 	FTimerHandle OverHeadGaugeVisibilityUpdateTimerHandle;
 	void UpdateOverHeadWidgetVisibility();
+
+	void StartDeathSequence();
+	void Respawn();
 };

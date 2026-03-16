@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Widgets/OverHeadStatsGauge.h"
 #include "Kismet/GameplayStatics.h"
+#include "GAS/TAbilitySystemStatics.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ATCharacter
@@ -21,6 +22,8 @@ ATCharacter::ATCharacter()
 
 	OverHeadWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Over Head Widget Component"));
 	OverHeadWidgetComponent->SetupAttachment(GetRootComponent());
+
+	BindGASChangeDelegates();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,7 +62,7 @@ void ATCharacter::PossessedBy(AController* NewController)
 	if (NewController && !NewController->IsPlayerController()) {
 		// Bots and NPCs should run server-side init on the server, but not client-side init on the owning client
 		ServerSideInit();
-	}	
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,7 +71,7 @@ void ATCharacter::PossessedBy(AController* NewController)
 void ATCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	ConfigureOverHeadStatusWidget();
 }
 
@@ -91,11 +94,39 @@ void ATCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 }
 
 //////////////////////////////////////////////////////////////////////////
+// Bind GAS Change Delegates
+
+void ATCharacter::BindGASChangeDelegates()
+{
+	if (TAbilitySystemComponent)
+	{
+		FGameplayTag DeadTag = UTAbilitySystemStatics::GetDeadStatTag();
+		TAbilitySystemComponent->RegisterGameplayTagEvent(DeadTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ATCharacter::DeathTagUpdated);
+
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Death Tag Updated (delegate)
+
+void ATCharacter::DeathTagUpdated(const FGameplayTag Tag, int32 NewCount)
+{
+	if (NewCount != 0)
+	{
+		StartDeathSequence();
+	}
+	else 
+	{
+		Respawn();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Configure Over Head Status Widget
 
 void ATCharacter::ConfigureOverHeadStatusWidget()
 {
-	if(IsLocallyControlledByPlayer() || !OverHeadWidgetComponent)
+	if (IsLocallyControlledByPlayer() || !OverHeadWidgetComponent)
 	{
 		// Don't show overhead widget for local player or if the component is not valid
 		OverHeadWidgetComponent->SetVisibility(false);
@@ -104,7 +135,7 @@ void ATCharacter::ConfigureOverHeadStatusWidget()
 	}
 
 	UOverHeadStatsGauge* OverHeadStatsGauge = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
-	if(OverHeadStatsGauge)
+	if (OverHeadStatsGauge)
 	{
 		// Configure the overhead widget with the character's ability system component to display relevant stats
 		OverHeadStatsGauge->ConfigureWithASC(TAbilitySystemComponent);
@@ -113,7 +144,7 @@ void ATCharacter::ConfigureOverHeadStatusWidget()
 
 		GetWorldTimerManager().ClearTimer(OverHeadGaugeVisibilityUpdateTimerHandle);
 		GetWorldTimerManager().SetTimer(OverHeadGaugeVisibilityUpdateTimerHandle, this, &ATCharacter::UpdateOverHeadWidgetVisibility, OverHeadWidgetVisibilityUpdateInterval, true);
-	}	
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -122,12 +153,28 @@ void ATCharacter::ConfigureOverHeadStatusWidget()
 void ATCharacter::UpdateOverHeadWidgetVisibility()
 {
 	APawn* LocalPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-	if(LocalPawn)
+	if (LocalPawn)
 	{
 		float DistanceSquaredToLocalPawn = FVector::DistSquared(GetActorLocation(), LocalPawn->GetActorLocation());
 		bool bShouldBeVisible = DistanceSquaredToLocalPawn <= OverHeadWidgetVisibilityDistance;
 		OverHeadWidgetComponent->SetVisibility(bShouldBeVisible);
 		OverHeadWidgetComponent->SetHiddenInGame(!bShouldBeVisible);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Start Death Sequence
+
+void ATCharacter::StartDeathSequence()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Starting death sequence for %s (%s)"), *GetName(), *UEnum::GetValueAsString(GetLocalRole()));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Respawn
+
+void ATCharacter::Respawn()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Respawning %s (%s)"), *GetName(), *UEnum::GetValueAsString(GetLocalRole()));
 }
 

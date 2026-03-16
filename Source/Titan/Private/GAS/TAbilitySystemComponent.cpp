@@ -1,6 +1,15 @@
 // Created by Andrey cb Mikheev
 
 #include "GAS/TAbilitySystemComponent.h"
+#include "GAS/TAttributeSet.h"
+
+//////////////////////////////////////////////////////////////////////////
+// ctor UT Ability System Component
+
+UTAbilitySystemComponent::UTAbilitySystemComponent()
+{
+	GetGameplayAttributeValueChangeDelegate(UTAttributeSet::GetHealthAttribute()).AddUObject(this, &UTAbilitySystemComponent::HealthUpdated);
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Apply Initial Effects
@@ -28,6 +37,9 @@ void UTAbilitySystemComponent::ApplyInitialEffects()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Give Initial Abilities
+
 void UTAbilitySystemComponent::GiveInitialAbilities()
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority())
@@ -45,3 +57,27 @@ void UTAbilitySystemComponent::GiveInitialAbilities()
 		GiveAbility(FGameplayAbilitySpec(AbilityPair.Value, 1, (int32)AbilityPair.Key, nullptr));
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Health Updated (delegate)
+
+void UTAbilitySystemComponent::HealthUpdated(const FOnAttributeChangeData& Data)
+{
+	if(!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	if(Data.NewValue <= 0 && DeathEffect)
+	{
+		FGameplayEffectContextHandle EffectInstigatorContext = MakeEffectContext();
+		EffectInstigatorContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = MakeOutgoingSpec(DeathEffect, 1, EffectInstigatorContext);
+		if (SpecHandle.IsValid())
+		{
+			ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+	}
+}
+
