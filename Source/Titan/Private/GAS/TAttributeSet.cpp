@@ -2,6 +2,7 @@
 
 #include "GAS/TAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectExtension.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Get Lifetime Replicated Props
@@ -16,6 +17,9 @@ void UTAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME_CONDITION_NOTIFY(UTAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Pre Attribute Change
+
 void UTAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	if (Attribute == GetHealthAttribute())
@@ -25,6 +29,27 @@ void UTAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, flo
 	else if (Attribute == GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Post Gameplay Effect Execute
+
+void UTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& EffectModCallbackDataData)
+{
+	if (!EffectModCallbackDataData.EffectSpec.Def)
+	{
+		return;
+	}
+
+	const FGameplayAttribute& Attribute = EffectModCallbackDataData.EvaluatedData.Attribute;
+	if (Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+	else if (Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
 }
 

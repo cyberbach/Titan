@@ -27,8 +27,6 @@ TArray<FHitResult> UTGameplayAbility::GetHitResultFromSweepLocationTargetData(co
 
 	for (const TSharedPtr<FGameplayAbilityTargetData>& TargetData : TargetDataHandle.Data)
 	{
-		TArray<FHitResult> SweepResults;
-
 		FVector StartLocation = TargetData->HasOrigin() ? TargetData->GetOrigin().GetLocation() : GetAvatarActorFromActorInfo()->GetActorLocation();
 		FVector EndLocation = TargetData->HasEndPoint() ? TargetData->GetEndPoint() : GetAvatarActorFromActorInfo()->GetActorLocation();
 
@@ -39,6 +37,8 @@ TArray<FHitResult> UTGameplayAbility::GetHitResultFromSweepLocationTargetData(co
 		ActorsToIgnore = bIgnoreSelf ? TArray<AActor*>{ GetAvatarActorFromActorInfo() } : TArray<AActor*>();
 
 		EDrawDebugTrace::Type DrawDebugTrace = bDrawDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
+
+		TArray<FHitResult> SweepResults;
 
 		UKismetSystemLibrary::SphereTraceMultiForObjects(
 			this,
@@ -55,10 +55,16 @@ TArray<FHitResult> UTGameplayAbility::GetHitResultFromSweepLocationTargetData(co
 
 		for(const FHitResult& HitResult : SweepResults)
 		{
+			// display name of hit actor
+			//UE_LOG(LogTemp, Log, TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName());
+
 			if (HitActors.Contains(HitResult.GetActor()))
 			{
+				// UE_LOG(LogTemp, Log, TEXT("Hit Actor ignored: %s"), *HitResult.GetActor()->GetName());
 				continue;
 			}
+
+			// UE_LOG(LogTemp, Log, TEXT("Hit Actor not ignored: %s"), *HitResult.GetActor()->GetName());
 			HitActors.Add(HitResult.GetActor());
 			OutResults.Add(HitResult);
 		}

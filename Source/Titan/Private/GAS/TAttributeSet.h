@@ -23,7 +23,11 @@ class UTAttributeSet : public UAttributeSet
 
 public:
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	// PreAttributeChange is called when a gameplay effect modifies the base value of an attribute, and allows you to clamp it or do other processing.
+	// It is not called for temporary modifications that don't modify the base value, such as a 5 second +10 movement speed buff.
+	// Not called by executions, but is called by any gameplay effect that modifies the base value of an attribute.
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, Health)
 	ATTRIBUTE_ACCESSORS(UTAttributeSet, MaxHealth)

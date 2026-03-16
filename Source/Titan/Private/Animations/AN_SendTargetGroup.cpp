@@ -30,7 +30,6 @@ void UAN_SendTargetGroup::Notify(USkeletalMeshComponent* MeshComp, UAnimSequence
 		FGameplayAbilityTargetData_LocationInfo* LocationInfo = new FGameplayAbilityTargetData_LocationInfo();
 		LocationInfo->SourceLocation.LiteralTransform.SetLocation(StartLocation);
 		LocationInfo->TargetLocation.LiteralTransform.SetLocation(EndLocation);
-
 		EventData.TargetData.Add(LocationInfo);
 	}
 
